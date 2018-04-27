@@ -93,6 +93,10 @@ export default class TimezonePicker extends React.Component {
         this.setState({ focused: 0 });
       }
     }
+
+    if (typeof this.props.inputProps.onKeyDown === 'function') {
+      this.props.inputProps.onKeyDown(e);
+    }
   }
 
   handleSelect(zone) {
@@ -144,16 +148,16 @@ export default class TimezonePicker extends React.Component {
           <input
             disabled={this.props.disabled}
             type="text"
-            onFocus={e => this.handleFocus(e)}
-            onBlur={e => this.handleBlur(e)}
-            onChange={e => this.handleFilterChange(e)}
-            onKeyDown={e => this.handleKeyPress(e)}
             defaultValue={value}
             ref={(field) => {
               this.field = field;
             }}
             autoComplete="off"
             {...inputProps}
+            onFocus={e => this.handleFocus(e)}
+            onBlur={e => this.handleBlur(e)}
+            onChange={e => this.handleFilterChange(e)}
+            onKeyDown={e => this.handleKeyPress(e)}
           />
         </div>
         <ul
@@ -196,6 +200,7 @@ TimezonePicker.propTypes = {
     onBlur: PropTypes.func,
     onFocus: PropTypes.func,
     onChange: PropTypes.func,
+    onKeyDown: PropTypes.func,
   }),
   timezones: PropTypes.shape({}),
 };
