@@ -7,7 +7,7 @@
 		exports["ReactTimezone"] = factory(require("react"));
 	else
 		root["ReactTimezone"] = factory(root["React"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_6__) {
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_6__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -603,6 +603,10 @@ var TimezonePicker = function (_React$Component) {
           this.setState({ focused: 0 });
         }
       }
+
+      if (typeof this.props.inputProps.onKeyDown === 'function') {
+        this.props.inputProps.onKeyDown(e);
+      }
     }
   }, {
     key: 'handleSelect',
@@ -660,6 +664,12 @@ var TimezonePicker = function (_React$Component) {
           _react2.default.createElement('input', _extends({
             disabled: this.props.disabled,
             type: 'text',
+            defaultValue: value,
+            ref: function ref(field) {
+              _this3.field = field;
+            },
+            autoComplete: 'off'
+          }, inputProps, {
             onFocus: function onFocus(e) {
               return _this3.handleFocus(e);
             },
@@ -671,13 +681,8 @@ var TimezonePicker = function (_React$Component) {
             },
             onKeyDown: function onKeyDown(e) {
               return _this3.handleKeyPress(e);
-            },
-            defaultValue: value,
-            ref: function ref(field) {
-              _this3.field = field;
-            },
-            autoComplete: 'off'
-          }, inputProps))
+            }
+          }))
         ),
         _react2.default.createElement(
           'ul',
@@ -731,7 +736,8 @@ TimezonePicker.propTypes = {
   inputProps: _propTypes2.default.shape({
     onBlur: _propTypes2.default.func,
     onFocus: _propTypes2.default.func,
-    onChange: _propTypes2.default.func
+    onChange: _propTypes2.default.func,
+    onKeyDown: _propTypes2.default.func
   }),
   timezones: _propTypes2.default.shape({})
 };
@@ -1612,9 +1618,9 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 		module.exports = classNames;
 	} else if (true) {
 		// register as 'classnames', consistent with npm package name
-		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
 			return classNames;
-		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	} else {
 		window.classNames = classNames;
@@ -1657,7 +1663,7 @@ if(false) {
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(15)(undefined);
+exports = module.exports = __webpack_require__(15)(false);
 // imports
 
 
@@ -1819,7 +1825,7 @@ module.exports = function(list, options) {
 
 	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
 	// tags it will allow on a page
-	if (!options.singleton) options.singleton = isOldIE();
+	if (!options.singleton && typeof options.singleton !== "boolean") options.singleton = isOldIE();
 
 	// By default, add <style> tags to the <head> element
 	if (!options.insertInto) options.insertInto = "head";
